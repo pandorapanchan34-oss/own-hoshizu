@@ -5,90 +5,45 @@
 <title>Own(星図) - 星図</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: #000;
-  color: #fff;
-  font-family: 'Courier New', Courier, monospace;
-  overflow: hidden;
-  width: 100vw;
-  height: 100vh;
-}
+body { background:#000; color:#fff; font-family:'Courier New',Courier,monospace; overflow:hidden; width:100vw; height:100vh; }
 .header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  padding: 16px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 100;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, transparent 100%);
+  position:fixed; top:0; left:0; right:0; padding:16px 24px;
+  display:flex; justify-content:space-between; align-items:center; z-index:100;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.95) 0%,transparent 100%);
 }
-.header-title { font-size: 0.85rem; letter-spacing: 0.3rem; color: #333; }
-.header-right { display: flex; gap: 16px; align-items: center; }
-.header-info { font-size: 0.68rem; color: #2a2a2a; letter-spacing: 0.1rem; }
+.header-title { font-size:0.85rem; letter-spacing:0.3rem; color:#333; }
+.header-right { display:flex; gap:16px; align-items:center; }
+.header-info { font-size:0.68rem; color:#2a2a2a; letter-spacing:0.1rem; }
 .back-btn {
-  font-size: 0.7rem; color: #2a2a2a; letter-spacing: 0.1rem;
-  background: none; border: 1px solid #111; padding: 6px 12px;
-  cursor: pointer; font-family: 'Courier New', monospace;
-  transition: all 0.2s; text-decoration: none; display: inline-block;
+  font-size:0.7rem; color:#2a2a2a; letter-spacing:0.1rem;
+  background:none; border:1px solid #111; padding:6px 12px;
+  cursor:pointer; font-family:'Courier New',monospace;
+  transition:all 0.2s; text-decoration:none; display:inline-block;
 }
-.back-btn:hover { border-color: #444; color: #666; }
-
-#starCanvas { display: block; width: 100vw; height: 100vh; cursor: crosshair; }
-
+.back-btn:hover { border-color:#444; color:#666; }
+#starCanvas { display:block; width:100vw; height:100vh; cursor:crosshair; }
 .my-panel {
-  position: fixed;
-  bottom: 24px; left: 24px;
-  border: 1px solid #111;
-  padding: 16px 20px;
-  background: rgba(0,0,0,0.95);
-  min-width: 210px;
-  z-index: 100;
+  position:fixed; bottom:24px; left:24px; border:1px solid #111;
+  padding:16px 20px; background:rgba(0,0,0,0.95); min-width:210px; z-index:100;
 }
-.my-panel-label { font-size: 0.58rem; color: #2a2a2a; letter-spacing: 0.2rem; margin-bottom: 8px; }
-.my-star-name { font-size: 1rem; color: #fff; margin-bottom: 6px; }
-.my-fobs { font-size: 0.62rem; color: #333; line-height: 1.8; }
-.my-change-label { font-size: 0.65rem; color: #222; margin-top: 8px; letter-spacing: 0.08rem; }
-
+.my-panel-label { font-size:0.58rem; color:#2a2a2a; letter-spacing:0.2rem; margin-bottom:8px; }
+.my-star-name { font-size:1rem; color:#fff; margin-bottom:6px; }
+.my-fobs { font-size:0.62rem; color:#333; line-height:1.8; }
 .tooltip {
-  position: fixed;
-  background: rgba(0,0,0,0.97);
-  border: 1px solid #1a1a1a;
-  padding: 10px 14px;
-  font-size: 0.7rem;
-  color: #888;
-  pointer-events: none;
-  display: none;
-  z-index: 200;
-  line-height: 1.8;
+  position:fixed; background:rgba(0,0,0,0.97); border:1px solid #1a1a1a;
+  padding:10px 14px; font-size:0.7rem; color:#888; pointer-events:none; display:none; z-index:200; line-height:1.8;
 }
-.tooltip .tt-name { font-size: 0.88rem; color: #fff; margin-bottom: 2px; }
-.tooltip .tt-coord { color: #333; font-size: 0.62rem; }
-
-.axis-label {
-  position: fixed;
-  font-size: 0.58rem;
-  color: #111;
-  letter-spacing: 0.12rem;
-  pointer-events: none;
-}
-.axis-x-right  { bottom: 50%; right: 18px; transform: translateY(50%); }
-.axis-x-left   { bottom: 50%; left: 18px; transform: translateY(50%); }
-.axis-y-top    { top: 65px; left: 50%; transform: translateX(-50%); }
-.axis-y-bottom { bottom: 75px; left: 50%; transform: translateX(-50%); }
-
-.loading {
-  position: fixed;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  font-size: 0.72rem;
-  color: #222;
-  letter-spacing: 0.2rem;
-}
+.tooltip .tt-name { font-size:0.88rem; color:#fff; margin-bottom:2px; }
+.tooltip .tt-coord { color:#333; font-size:0.62rem; }
+.axis-label { position:fixed; font-size:0.58rem; color:#111; letter-spacing:0.12rem; pointer-events:none; }
+.ax-xr { bottom:50%; right:18px; transform:translateY(50%); }
+.ax-xl { bottom:50%; left:18px; transform:translateY(50%); }
+.ax-yt { top:65px; left:50%; transform:translateX(-50%); }
+.ax-yb { bottom:75px; left:50%; transform:translateX(-50%); }
+.loading { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); font-size:0.72rem; color:#222; letter-spacing:0.2rem; }
 </style>
 </head>
 <body>
-
 <div class="header">
   <div class="header-title">Own(星図)</div>
   <div class="header-right">
@@ -96,164 +51,128 @@ body {
     <a class="back-btn" href="own_index.html">← 戻る</a>
   </div>
 </div>
-
 <div class="loading" id="loading">星図を展開中...</div>
 <canvas id="starCanvas"></canvas>
-
-<div class="axis-label axis-x-right">高 →</div>
-<div class="axis-label axis-x-left">← 低　Frontier + Order</div>
-<div class="axis-label axis-y-top">Bond + Sense ↑ 高</div>
-<div class="axis-label axis-y-bottom">↓ 低</div>
-
+<div class="axis-label ax-xr">高 →</div>
+<div class="axis-label ax-xl">← 低　F + O</div>
+<div class="axis-label ax-yt">B + S ↑ 高</div>
+<div class="axis-label ax-yb">↓ 低</div>
 <div class="my-panel" id="my-panel" style="display:none;">
   <div class="my-panel-label">// あなたの星</div>
   <div class="my-star-name" id="my-name">—</div>
   <div class="my-fobs" id="my-fobs"></div>
 </div>
-
 <div class="tooltip" id="tooltip">
   <div class="tt-name" id="tt-name"></div>
   <div class="tt-coord" id="tt-coord"></div>
 </div>
 
+<script src="own-storage.js"></script>
 <script>
+const S = OwnStorage;
 const canvas = document.getElementById('starCanvas');
 const ctx = canvas.getContext('2d');
-let stars = [];
-let myStarData = null;
-let frame = 0;
+let stars = [], myStarData = null, frame = 0;
 
-function resize() {
-  canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 resize();
-window.addEventListener('resize', () => { resize(); });
+window.addEventListener('resize', resize);
 
-function toCanvasX(x) { return (x / 100) * (canvas.width  * 0.84) + canvas.width  * 0.08; }
-function toCanvasY(y) { return canvas.height - ((y / 100) * (canvas.height * 0.74) + canvas.height * 0.11); }
+const toX = x => (x/100)*(canvas.width*0.84) + canvas.width*0.08;
+const toY = y => canvas.height - ((y/100)*(canvas.height*0.74) + canvas.height*0.11);
 
-function senseToColor(sense, alpha) {
-  const s = Math.max(0, Math.min(100, sense || 50));
-  const r = Math.round(20  + (220-20)  * (s/100));
-  const g = Math.round(30  + (215-30)  * (s/100));
-  const b = Math.round(80  + (195-80)  * (s/100));
-  return `rgba(${r},${g},${b},${alpha})`;
+function senseColor(s, a) {
+  s = Math.max(0,Math.min(100,s||50));
+  return `rgba(${Math.round(20+(220-20)*(s/100))},${Math.round(30+(215-30)*(s/100))},${Math.round(80+(195-80)*(s/100))},${a})`;
 }
-
-function orderToSize(order) {
-  return 1.2 + (Math.max(0, Math.min(100, order || 50)) / 100) * 5;
-}
+function orderSize(o) { return 1.2 + (Math.max(0,Math.min(100,o||50))/100)*5; }
 
 function drawGrid() {
-  ctx.strokeStyle = 'rgba(255,255,255,0.015)';
   ctx.lineWidth = 1;
-  for (let i = 1; i < 10; i++) {
-    const x = toCanvasX(i * 10);
-    const y = toCanvasY(i * 10);
-    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+  ctx.strokeStyle = 'rgba(255,255,255,0.015)';
+  for (let i=1;i<10;i++) {
+    ctx.beginPath(); ctx.moveTo(toX(i*10),0); ctx.lineTo(toX(i*10),canvas.height); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,toY(i*10)); ctx.lineTo(canvas.width,toY(i*10)); ctx.stroke();
   }
-  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-  ctx.beginPath(); ctx.moveTo(toCanvasX(50), 0); ctx.lineTo(toCanvasX(50), canvas.height); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(0, toCanvasY(50)); ctx.lineTo(canvas.width, toCanvasY(50)); ctx.stroke();
+  ctx.strokeStyle = 'rgba(255,255,255,0.045)';
+  ctx.beginPath(); ctx.moveTo(toX(50),0); ctx.lineTo(toX(50),canvas.height); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0,toY(50)); ctx.lineTo(canvas.width,toY(50)); ctx.stroke();
 }
 
-function drawOneStar(star, isMe, pulse) {
-  const px = toCanvasX(star.x);
-  const py = toCanvasY(star.y);
-  const base = orderToSize(star.size);
-  const sz = isMe ? base + Math.sin(pulse * 0.04) * 1.5 : base;
-
-  // グロー
-  const glowR = isMe ? sz * 7 : sz * 3.5;
-  const glowA = isMe ? 0.22 : 0.06;
-  const glow = ctx.createRadialGradient(px, py, 0, px, py, glowR);
-  glow.addColorStop(0, senseToColor(star.color, glowA));
-  glow.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = glow;
-  ctx.beginPath(); ctx.arc(px, py, glowR, 0, Math.PI*2); ctx.fill();
-
-  // 本体
-  ctx.fillStyle = senseToColor(star.color, isMe ? 1 : 0.55);
-  ctx.beginPath(); ctx.arc(px, py, sz, 0, Math.PI*2); ctx.fill();
-
-  // 名前
-  if (star.vis === 'public' && star.name && star.name !== '名無し') {
-    ctx.fillStyle = isMe ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.2)';
-    ctx.font = isMe ? '10px Courier New' : '8px Courier New';
+function drawStar(star, isMe, pulse) {
+  const px = toX(star.x), py = toY(star.y);
+  const sz = orderSize(star.size) + (isMe ? Math.sin(pulse*0.04)*1.5 : 0);
+  const gr = isMe ? sz*7 : sz*3.5;
+  const ga = isMe ? 0.22 : 0.06;
+  const g = ctx.createRadialGradient(px,py,0,px,py,gr);
+  g.addColorStop(0, senseColor(star.color, ga));
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(px,py,gr,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = senseColor(star.color, isMe?1:0.55);
+  ctx.beginPath(); ctx.arc(px,py,sz,0,Math.PI*2); ctx.fill();
+  if (star.vis==='public' && star.name && star.name!=='名無し') {
+    ctx.fillStyle = isMe?'rgba(255,255,255,0.85)':'rgba(255,255,255,0.2)';
+    ctx.font = isMe?'10px Courier New':'8px Courier New';
     ctx.textAlign = 'center';
-    ctx.fillText(star.name, px, py - sz - 5);
+    ctx.fillText(star.name, px, py-sz-5);
   }
 }
 
 function drawAll() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
   drawGrid();
-  stars.forEach(s => drawOneStar(s, false, 0));
-  if (myStarData) drawOneStar(myStarData, true, frame);
+  stars.forEach(s => drawStar(s,false,0));
+  if (myStarData) drawStar(myStarData,true,frame);
 }
 
-function loop() {
-  frame++;
-  drawAll();
-  requestAnimationFrame(loop);
-}
+function loop() { frame++; drawAll(); requestAnimationFrame(loop); }
 
-// ホバー
 canvas.addEventListener('mousemove', e => {
-  const rect = canvas.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top;
-  let found = null, minD = 22;
+  const r = canvas.getBoundingClientRect();
+  const mx = e.clientX-r.left, my = e.clientY-r.top;
+  let found=null, minD=22;
   [...stars, myStarData].filter(Boolean).forEach(s => {
-    const d = Math.hypot(mx - toCanvasX(s.x), my - toCanvasY(s.y));
-    if (d < minD) { minD = d; found = s; }
+    const d = Math.hypot(mx-toX(s.x), my-toY(s.y));
+    if (d<minD) { minD=d; found=s; }
   });
   const tt = document.getElementById('tooltip');
   if (found) {
-    tt.style.display = 'block';
-    tt.style.left = (e.clientX + 14) + 'px';
-    tt.style.top  = (e.clientY - 10) + 'px';
-    document.getElementById('tt-name').textContent = found.name || '名無し';
+    tt.style.display='block';
+    tt.style.left=(e.clientX+14)+'px'; tt.style.top=(e.clientY-10)+'px';
+    document.getElementById('tt-name').textContent = found.name||'名無し';
+    const f = found.fobs||{};
     document.getElementById('tt-coord').textContent =
-      `F:${Math.round(found.fobs?.frontier||found.x)}  O:${Math.round(found.fobs?.order||found.size)}  B:${Math.round(found.fobs?.bond||found.y)}  S:${Math.round(found.fobs?.sense||found.color)}`;
-  } else {
-    tt.style.display = 'none';
-  }
+      `F:${Math.round(f.frontier??found.x)}  O:${Math.round(f.order??found.size)}  B:${Math.round(f.bond??found.y)}  S:${Math.round(f.sense??found.color)}`;
+  } else { tt.style.display='none'; }
 });
-canvas.addEventListener('mouseleave', () => { document.getElementById('tooltip').style.display = 'none'; });
+canvas.addEventListener('mouseleave', () => { document.getElementById('tooltip').style.display='none'; });
 
 async function loadStars() {
-  // 自分の星
   try {
-    const my = await window.storage.get('own_mystar');
-    if (my && my.value) {
+    const my = await S.get('own_mystar');
+    if (my?.value) {
       myStarData = JSON.parse(my.value);
-      myStarData._isMe = true;
       document.getElementById('my-panel').style.display = 'block';
-      document.getElementById('my-name').textContent = myStarData.name || '名無し';
-      const f = myStarData.fobs || {};
+      document.getElementById('my-name').textContent = myStarData.name||'名無し';
+      const f = myStarData.fobs||{};
       document.getElementById('my-fobs').innerHTML =
-        `F: ${Math.round(f.frontier||myStarData.x||0)}　O: ${Math.round(f.order||myStarData.size||0)}<br>B: ${Math.round(f.bond||myStarData.y||0)}　S: ${Math.round(f.sense||myStarData.color||0)}<br><span style="color:#1a1a1a">[ ${myStarData.mbti||'——'} ]</span>`;
+        `F: ${Math.round(f.frontier??myStarData.x??0)}　O: ${Math.round(f.order??myStarData.size??0)}<br>B: ${Math.round(f.bond??myStarData.y??0)}　S: ${Math.round(f.sense??myStarData.color??0)}<br><span style="color:#1a1a1a">[ ${myStarData.mbti||'——'} ]</span>`;
     }
-  } catch(e) {}
+  } catch(e){}
 
-  // 公開星
   try {
-    const keys = await window.storage.list('own_star_', true);
-    if (keys && keys.keys) {
+    const keys = await S.list('own_star_', true);
+    if (keys?.keys?.length) {
       const results = await Promise.all(
-        keys.keys.slice(0,300).map(k =>
-          window.storage.get(k, true).then(r => r?.value ? JSON.parse(r.value) : null).catch(()=>null)
-        )
+        keys.keys.slice(0,300).map(k => S.get(k,true).then(r=>r?.value?JSON.parse(r.value):null).catch(()=>null))
       );
       stars = results.filter(Boolean);
     }
-  } catch(e) {}
+  } catch(e){}
 
-  const total = stars.length + (myStarData ? 1 : 0);
-  document.getElementById('star-count').textContent = total > 0 ? `${total} 個の星` : '';
+  const total = stars.length + (myStarData?1:0);
+  document.getElementById('star-count').textContent = total>0 ? `${total} 個の星`:'';
   document.getElementById('loading').style.display = 'none';
   loop();
 }
