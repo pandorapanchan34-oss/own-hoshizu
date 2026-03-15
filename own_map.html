@@ -21,7 +21,9 @@ body { background:#000; color:#fff; font-family:'Courier New',Courier,monospace;
   transition:all 0.2s; text-decoration:none; display:inline-block;
 }
 .back-btn:hover { border-color:#444; color:#666; }
+
 #starCanvas { display:block; width:100vw; height:100vh; cursor:crosshair; }
+
 .my-panel {
   position:fixed; bottom:24px; left:24px; border:1px solid #111;
   padding:16px 20px; background:rgba(0,0,0,0.95); min-width:210px; z-index:100;
@@ -29,17 +31,36 @@ body { background:#000; color:#fff; font-family:'Courier New',Courier,monospace;
 .my-panel-label { font-size:0.58rem; color:#2a2a2a; letter-spacing:0.2rem; margin-bottom:8px; }
 .my-star-name { font-size:1rem; color:#fff; margin-bottom:6px; }
 .my-fobs { font-size:0.62rem; color:#333; line-height:1.8; }
-.tooltip {
-  position:fixed; background:rgba(0,0,0,0.97); border:1px solid #1a1a1a;
-  padding:10px 14px; font-size:0.7rem; color:#888; pointer-events:none; display:none; z-index:200; line-height:1.8;
+
+.star-popup {
+  position:fixed;
+  background:rgba(0,0,0,0.97);
+  border:1px solid #222;
+  padding:16px 20px;
+  font-size:0.72rem;
+  color:#888;
+  display:none;
+  z-index:200;
+  line-height:1.9;
+  min-width:160px;
+  pointer-events:none;
 }
-.tooltip .tt-name { font-size:0.88rem; color:#fff; margin-bottom:2px; }
-.tooltip .tt-coord { color:#333; font-size:0.62rem; }
+.star-popup .pp-name { font-size:1rem; color:#fff; margin-bottom:6px; letter-spacing:0.05rem; }
+.star-popup .pp-fobs { font-size:0.68rem; color:#555; line-height:1.9; }
+.star-popup .pp-mbti { font-size:0.65rem; color:#333; margin-top:6px; letter-spacing:0.1rem; }
+.star-popup .pp-close {
+  position:absolute; top:8px; right:10px;
+  font-size:0.65rem; color:#333; cursor:pointer;
+  pointer-events:all;
+}
+.star-popup .pp-close:hover { color:#888; }
+
 .axis-label { position:fixed; font-size:0.58rem; color:#111; letter-spacing:0.12rem; pointer-events:none; }
 .ax-xr { bottom:50%; right:18px; transform:translateY(50%); }
 .ax-xl { bottom:50%; left:18px; transform:translateY(50%); }
 .ax-yt { top:65px; left:50%; transform:translateX(-50%); }
 .ax-yb { bottom:75px; left:50%; transform:translateX(-50%); }
+
 .loading { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); font-size:0.72rem; color:#222; letter-spacing:0.2rem; }
 </style>
 </head>
@@ -57,14 +78,18 @@ body { background:#000; color:#fff; font-family:'Courier New',Courier,monospace;
 <div class="axis-label ax-xl">← 低　F + O</div>
 <div class="axis-label ax-yt">B + S ↑ 高</div>
 <div class="axis-label ax-yb">↓ 低</div>
+
 <div class="my-panel" id="my-panel" style="display:none;">
   <div class="my-panel-label">// あなたの星</div>
   <div class="my-star-name" id="my-name">—</div>
   <div class="my-fobs" id="my-fobs"></div>
 </div>
-<div class="tooltip" id="tooltip">
-  <div class="tt-name" id="tt-name"></div>
-  <div class="tt-coord" id="tt-coord"></div>
+
+<div class="star-popup" id="star-popup">
+  <span class="pp-close" onclick="closePopup()">×</span>
+  <div class="pp-name" id="pp-name"></div>
+  <div class="pp-fobs" id="pp-fobs"></div>
+  <div class="pp-mbti" id="pp-mbti"></div>
 </div>
 
 <script src="own-storage.js"></script>
@@ -72,6 +97,7 @@ body { background:#000; color:#fff; font-family:'Courier New',Courier,monospace;
 const S = OwnStorage;
 const canvas = document.getElementById('starCanvas');
 const ctx = canvas.getContext('2d');
+const popup = document.getElementById('star-popup');
 let stars = [], myStarData = null, frame = 0;
 
 function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -125,54 +151,102 @@ function drawAll() {
   stars.forEach(s => drawStar(s,false,0));
   if (myStarData) drawStar(myStarData,true,frame);
 }
-
 function loop() { frame++; drawAll(); requestAnimationFrame(loop); }
 
-canvas.addEventListener('mousemove', e => {
-  const r = canvas.getBoundingClientRect();
-  const mx = e.clientX-r.left, my = e.clientY-r.top;
-  let found=null, minD=22;
+// タップ処理
+function findNearStar(cx, cy) {
+  let found = null, minD = 28;
   [...stars, myStarData].filter(Boolean).forEach(s => {
-    const d = Math.hypot(mx-toX(s.x), my-toY(s.y));
-    if (d<minD) { minD=d; found=s; }
+    const d = Math.hypot(cx - toX(s.x), cy - toY(s.y));
+    if (d < minD) { minD = d; found = s; }
   });
-  const tt = document.getElementById('tooltip');
-  if (found) {
-    tt.style.display='block';
-    tt.style.left=(e.clientX+14)+'px'; tt.style.top=(e.clientY-10)+'px';
-    document.getElementById('tt-name').textContent = found.name||'名無し';
-    const f = found.fobs||{};
-    document.getElementById('tt-coord').textContent =
-      `F:${Math.round(f.frontier??found.x)}  O:${Math.round(f.order??found.size)}  B:${Math.round(f.bond??found.y)}  S:${Math.round(f.sense??found.color)}`;
-  } else { tt.style.display='none'; }
-});
-canvas.addEventListener('mouseleave', () => { document.getElementById('tooltip').style.display='none'; });
+  return found;
+}
 
+function showPopup(star, clientX, clientY) {
+  const f = star.fobs || {};
+  document.getElementById('pp-name').textContent = star.name || '名無し';
+  document.getElementById('pp-fobs').innerHTML =
+    `F: ${Math.round(f.frontier ?? star.x ?? 0)}&nbsp;&nbsp;` +
+    `O: ${Math.round(f.order ?? star.size ?? 0)}<br>` +
+    `B: ${Math.round(f.bond ?? star.y ?? 0)}&nbsp;&nbsp;` +
+    `S: ${Math.round(f.sense ?? star.color ?? 0)}`;
+  document.getElementById('pp-mbti').textContent = star.mbti ? `[ ${star.mbti} ]` : '';
+
+  const pw = 180, ph = 110;
+  let left = clientX + 14;
+  let top  = clientY - 10;
+  if (left + pw > window.innerWidth)  left = clientX - pw - 14;
+  if (top  + ph > window.innerHeight) top  = window.innerHeight - ph - 10;
+  if (top < 60) top = 60;
+
+  popup.style.left    = left + 'px';
+  popup.style.top     = top  + 'px';
+  popup.style.display = 'block';
+  popup.style.pointerEvents = 'all';
+}
+
+function closePopup() {
+  popup.style.display = 'none';
+  popup.style.pointerEvents = 'none';
+}
+
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const found = findNearStar(e.clientX - rect.left, e.clientY - rect.top);
+  if (found) showPopup(found, e.clientX, e.clientY);
+  else closePopup();
+});
+
+canvas.addEventListener('touchend', e => {
+  e.preventDefault();
+  const t = e.changedTouches[0];
+  const rect = canvas.getBoundingClientRect();
+  const found = findNearStar(t.clientX - rect.left, t.clientY - rect.top);
+  if (found) showPopup(found, t.clientX, t.clientY);
+  else closePopup();
+}, { passive: false });
+
+// ── データロード ──
 async function loadStars() {
+  // 自分の星
   try {
     const my = await S.get('own_mystar');
     if (my?.value) {
       myStarData = JSON.parse(my.value);
       document.getElementById('my-panel').style.display = 'block';
-      document.getElementById('my-name').textContent = myStarData.name||'名無し';
-      const f = myStarData.fobs||{};
+      document.getElementById('my-name').textContent = myStarData.name || '名無し';
+      const f = myStarData.fobs || {};
       document.getElementById('my-fobs').innerHTML =
-        `F: ${Math.round(f.frontier??myStarData.x??0)}　O: ${Math.round(f.order??myStarData.size??0)}<br>B: ${Math.round(f.bond??myStarData.y??0)}　S: ${Math.round(f.sense??myStarData.color??0)}<br><span style="color:#1a1a1a">[ ${myStarData.mbti||'——'} ]</span>`;
+        `F: ${Math.round(f.frontier??myStarData.x??0)}　O: ${Math.round(f.order??myStarData.size??0)}<br>` +
+        `B: ${Math.round(f.bond??myStarData.y??0)}　S: ${Math.round(f.sense??myStarData.color??0)}<br>` +
+        `<span style="color:#1a1a1a">[ ${myStarData.mbti||'——'} ]</span>`;
     }
   } catch(e){}
 
+  // 本物の星 + ダミー星を両方取得
   try {
-    const keys = await S.list('own_star_', true);
-    if (keys?.keys?.length) {
+    const [realKeys, dummyKeys] = await Promise.all([
+      S.list('own_star_',  true),
+      S.list('own_dummy_', true),
+    ]);
+    const allKeys = [
+      ...(realKeys?.keys  || []),
+      ...(dummyKeys?.keys || []),
+    ].slice(0, 600);
+
+    if (allKeys.length) {
       const results = await Promise.all(
-        keys.keys.slice(0,300).map(k => S.get(k,true).then(r=>r?.value?JSON.parse(r.value):null).catch(()=>null))
+        allKeys.map(k =>
+          S.get(k, true).then(r => r?.value ? JSON.parse(r.value) : null).catch(()=>null)
+        )
       );
       stars = results.filter(Boolean);
     }
   } catch(e){}
 
-  const total = stars.length + (myStarData?1:0);
-  document.getElementById('star-count').textContent = total>0 ? `${total} 個の星`:'';
+  const total = stars.length + (myStarData ? 1 : 0);
+  document.getElementById('star-count').textContent = total > 0 ? `${total} 個の星` : '';
   document.getElementById('loading').style.display = 'none';
   loop();
 }
