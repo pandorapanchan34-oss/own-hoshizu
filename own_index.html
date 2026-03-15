@@ -32,156 +32,78 @@ h1 {
   margin-bottom: 24px;
 }
 
-/* ── 再訪問画面 ── */
-#returning-screen {
-  display: none;
-}
+/* 再訪問画面 */
+#returning-screen { display: none; }
 .returning-msg {
   padding: 28px 0;
   border-bottom: 1px solid #111;
   margin-bottom: 28px;
 }
-.returning-msg p {
-  font-size: 0.88rem;
-  color: #888;
-  line-height: 2;
-  margin-bottom: 6px;
-}
+.returning-msg p { font-size: 0.88rem; color: #888; line-height: 2; margin-bottom: 6px; }
 .returning-msg .accent {
-  font-size: 0.82rem;
-  color: #555;
-  font-style: italic;
-  line-height: 1.9;
-  margin-top: 16px;
+  font-size: 0.82rem; color: #555; font-style: italic; line-height: 1.9; margin-top: 16px;
 }
 .prev-fobs {
-  margin: 24px 0;
-  padding: 18px;
-  border: 1px solid #111;
-  background: #050505;
+  margin: 24px 0; padding: 18px;
+  border: 1px solid #111; background: #050505;
 }
-.prev-fobs-label {
-  font-size: 0.62rem;
-  color: #333;
-  letter-spacing: 0.2rem;
-  margin-bottom: 14px;
-}
+.prev-fobs-label { font-size: 0.62rem; color: #333; letter-spacing: 0.2rem; margin-bottom: 14px; }
 .prev-axis {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
 }
 .prev-axis-name { font-size: 0.8rem; color: #666; letter-spacing: 0.08rem; }
 .prev-axis-bar-wrap { flex: 1; margin: 0 12px; height: 3px; background: #111; }
 .prev-axis-bar { height: 100%; background: #333; }
 .prev-axis-pct { font-size: 0.7rem; color: #444; width: 32px; text-align: right; }
-.prev-name-display {
-  font-size: 1rem;
-  color: #fff;
-  letter-spacing: 0.05rem;
-  margin-bottom: 6px;
-}
-.prev-meta {
-  font-size: 0.65rem;
-  color: #333;
-  letter-spacing: 0.1rem;
-}
-
-.returning-btns {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 24px;
-}
+.prev-name-display { font-size: 1rem; color: #fff; margin-bottom: 6px; }
+.prev-meta { font-size: 0.65rem; color: #333; letter-spacing: 0.1rem; }
+.returning-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
 .btn-map {
-  background: #fff;
-  color: #000;
-  border: none;
-  padding: 14px;
-  cursor: pointer;
-  font-family: 'Courier New', monospace;
-  font-size: 0.85rem;
-  font-weight: bold;
-  letter-spacing: 0.15rem;
-  transition: background 0.2s;
-  text-align: center;
-  text-decoration: none;
-  display: block;
+  background: #fff; color: #000; border: none; padding: 14px;
+  cursor: pointer; font-family: 'Courier New', monospace;
+  font-size: 0.85rem; font-weight: bold; letter-spacing: 0.15rem;
+  transition: background 0.2s; text-align: center; text-decoration: none; display: block;
 }
 .btn-map:hover { background: #ddd; }
 .btn-retry {
-  background: none;
-  color: #444;
-  border: 1px solid #1a1a1a;
-  padding: 12px;
-  cursor: pointer;
-  font-family: 'Courier New', monospace;
-  font-size: 0.78rem;
-  letter-spacing: 0.1rem;
-  transition: all 0.2s;
+  background: none; color: #444; border: 1px solid #1a1a1a; padding: 12px;
+  cursor: pointer; font-family: 'Courier New', monospace;
+  font-size: 0.78rem; letter-spacing: 0.1rem; transition: all 0.2s;
 }
 .btn-retry:hover { border-color: #555; color: #888; }
 
-/* ── 通常診断画面 ── */
+/* 通常診断画面 */
 #quiz-screen { display: none; }
 #intro { margin-bottom: 28px; color: #888; font-size: 0.9rem; line-height: 1.8; }
-
 .ritual-question {
-  margin-bottom: 32px;
-  padding: 20px;
-  border: 1px solid #222;
-  background: #050505;
+  margin-bottom: 32px; padding: 20px;
+  border: 1px solid #222; background: #050505;
 }
-.ritual-question p {
-  font-size: 0.9rem;
-  color: #ccc;
-  line-height: 1.8;
-  margin-bottom: 16px;
-}
-
+.ritual-question p { font-size: 0.9rem; color: #ccc; line-height: 1.8; margin-bottom: 16px; }
 .section-header {
-  font-size: 0.7rem;
-  letter-spacing: 0.3rem;
-  color: #333;
-  margin: 32px 0 16px;
-  border-left: 2px solid #1a1a1a;
-  padding-left: 10px;
+  font-size: 0.7rem; letter-spacing: 0.3rem; color: #333;
+  margin: 32px 0 16px; border-left: 2px solid #1a1a1a; padding-left: 10px;
 }
-.question {
-  margin-bottom: 24px;
-  border-bottom: 1px solid #0d0d0d;
-  padding-bottom: 16px;
-}
-.question p {
-  font-size: 0.85rem;
-  line-height: 1.75;
-  margin-bottom: 12px;
-  color: #bbb;
-}
-
+.question { margin-bottom: 24px; border-bottom: 1px solid #0d0d0d; padding-bottom: 16px; }
+.question p { font-size: 0.85rem; line-height: 1.75; margin-bottom: 12px; color: #bbb; }
 .scale-wrap { display: flex; gap: 6px; align-items: center; }
 .scale-edge { font-size: 0.65rem; color: #333; white-space: nowrap; }
 .scale-btns { display: flex; gap: 5px; flex: 1; justify-content: center; }
 .scale-btns input[type="radio"] { display: none; }
 .scale-btns label {
   display: flex; align-items: center; justify-content: center;
-  width: 40px; height: 40px;
-  border: 1px solid #1a1a1a;
-  cursor: pointer; font-size: 0.8rem; color: #333;
-  transition: all 0.15s ease; user-select: none;
+  width: 40px; height: 40px; border: 1px solid #1a1a1a;
+  cursor: pointer; font-size: 0.8rem; color: #333; transition: all 0.15s; user-select: none;
 }
 .scale-btns label:hover { border-color: #555; color: #aaa; }
 .scale-btns input[type="radio"]:checked + label {
   background: #fff; color: #000; border-color: #fff; font-weight: bold;
 }
-
 .result-box {
   display: none; background: #030303; padding: 28px;
   border: 1px solid #fff; margin-top: 28px;
 }
 .result-box h2 { font-size: 0.78rem; letter-spacing: 0.2rem; margin-bottom: 24px; color: #555; }
-
 .axis-block { margin-bottom: 20px; }
 .axis-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
 .axis-name { font-size: 0.9rem; color: #fff; letter-spacing: 0.1rem; }
@@ -191,8 +113,7 @@ h1 {
   background: none; border: 1px solid #222; color: #444;
   font-family: 'Courier New', monospace; font-size: 0.65rem;
   width: 18px; height: 18px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
 }
 .axis-info-btn:hover { border-color: #777; color: #aaa; }
 .axis-info-btn.open { border-color: #fff; color: #fff; }
@@ -205,33 +126,24 @@ h1 {
   line-height: 1.8; border-left: 1px solid #1a1a1a; padding-left: 12px; margin-top: 8px;
 }
 .axis-desc-inner .dsub { color: #333; font-size: 0.68rem; margin-top: 2px; }
-
 .change-box {
-  margin: 24px 0; padding: 18px;
-  border: 1px solid #111; background: #000; text-align: center;
+  margin: 24px 0; padding: 18px; border: 1px solid #111; background: #000; text-align: center;
 }
 .change-label-text { font-size: 0.65rem; color: #333; letter-spacing: 0.2rem; margin-bottom: 8px; }
 .change-value { font-size: 1.4rem; letter-spacing: 0.3rem; color: #fff; }
 .change-value.positive { color: #aaa; }
 .change-value.negative { color: #555; }
 .change-value.zero { color: #333; }
-
 hr { border: none; border-top: 1px solid #0d0d0d; margin: 22px 0; }
-
 .coordinate-box { margin-bottom: 22px; padding: 16px; border: 1px solid #111; background: #000; }
 .coord-loading { font-size: 0.72rem; color: #333; letter-spacing: 0.1rem; }
 .coord-result { display: none; }
 .coord-count { font-size: 1.5rem; font-weight: bold; color: #fff; }
 .coord-label { font-size: 0.7rem; color: #444; margin-top: 4px; line-height: 1.7; }
 .coord-label span { color: #666; }
-
 #mbti-warn { font-size: 0.8rem; color: #555; line-height: 1.9; }
 #mbti-warn strong { color: #fff; font-size: 1rem; letter-spacing: 0.15rem; }
-
-.naming-box {
-  display: none; margin-top: 22px;
-  border: 1px solid #222; padding: 24px; background: #000;
-}
+.naming-box { display: none; margin-top: 22px; border: 1px solid #222; padding: 24px; background: #000; }
 .naming-box h3 { font-size: 0.72rem; color: #444; letter-spacing: 0.2rem; margin-bottom: 16px; }
 .naming-box p { font-size: 0.82rem; color: #777; line-height: 1.8; margin-bottom: 16px; }
 .name-input {
@@ -241,34 +153,26 @@ hr { border: none; border-top: 1px solid #0d0d0d; margin: 22px 0; }
 }
 .name-input:focus { border-color: #fff; }
 .name-input::placeholder { color: #333; }
-
 .visibility-wrap { display: flex; gap: 8px; margin-top: 12px; }
 .vis-btn {
-  flex: 1; padding: 10px; border: 1px solid #1a1a1a; background: none;
-  color: #333; cursor: pointer; font-family: 'Courier New', monospace;
-  font-size: 0.75rem; letter-spacing: 0.08rem; transition: all 0.15s;
+  flex: 1; padding: 10px; border: 1px solid #1a1a1a; background: none; color: #333;
+  cursor: pointer; font-family: 'Courier New', monospace; font-size: 0.75rem;
+  letter-spacing: 0.08rem; transition: all 0.15s;
 }
 .vis-btn:hover { border-color: #555; color: #888; }
 .vis-btn.selected { border-color: #fff; color: #fff; background: #0a0a0a; }
-
 .map-btn {
-  width: 100%; margin-top: 16px; padding: 14px;
-  background: #fff; color: #000; border: none;
-  font-family: 'Courier New', monospace; font-size: 0.85rem;
-  font-weight: bold; letter-spacing: 0.15rem; cursor: pointer; transition: background 0.2s;
+  width: 100%; margin-top: 16px; padding: 14px; background: #fff; color: #000; border: none;
+  font-family: 'Courier New', monospace; font-size: 0.85rem; font-weight: bold;
+  letter-spacing: 0.15rem; cursor: pointer; transition: background 0.2s;
 }
 .map-btn:hover { background: #ddd; }
-
-.rec-section {
-  display: none; margin-top: 20px;
-  border: 1px solid #0d0d0d; padding: 22px; background: #000;
-}
+.rec-section { display: none; margin-top: 20px; border: 1px solid #0d0d0d; padding: 22px; background: #000; }
 .rec-section h3 { font-size: 0.7rem; color: #333; letter-spacing: 0.2rem; margin-bottom: 18px; }
 .rec-grid { display: flex; flex-direction: column; gap: 10px; }
 .rec-card {
-  display: flex; align-items: stretch;
-  border: 1px solid #111; text-decoration: none; color: #fff;
-  transition: border-color 0.2s; background: #050505;
+  display: flex; align-items: stretch; border: 1px solid #111;
+  text-decoration: none; color: #fff; transition: border-color 0.2s; background: #050505;
 }
 .rec-card:hover { border-color: #444; }
 .rec-accent { width: 2px; background: #1a1a1a; flex-shrink: 0; transition: background 0.2s; }
@@ -279,14 +183,11 @@ hr { border: none; border-top: 1px solid #0d0d0d; margin: 22px 0; }
 .rec-reason { font-size: 0.68rem; color: #333; line-height: 1.6; }
 .rec-arrow { display: flex; align-items: center; padding: 0 12px; color: #222; font-size: 0.75rem; transition: color 0.2s; }
 .rec-card:hover .rec-arrow { color: #666; }
-
 .notice { color: #222; font-size: 0.68rem; margin-top: 16px; line-height: 1.7; }
-
 button.run-btn {
   background: #fff; color: #000; border: none; padding: 14px 20px;
   cursor: pointer; font-weight: bold; font-family: 'Courier New', monospace;
-  width: 100%; font-size: 0.85rem; letter-spacing: 0.15rem;
-  margin-top: 12px; transition: background 0.2s;
+  width: 100%; font-size: 0.85rem; letter-spacing: 0.15rem; margin-top: 12px; transition: background 0.2s;
 }
 button.run-btn:hover { background: #ddd; }
 </style>
@@ -296,7 +197,6 @@ button.run-btn:hover { background: #ddd; }
   <h1>Own(星図)</h1>
   <div class="subtitle">// 自我の所有権を測定する</div>
 
-  <!-- 再訪問画面 -->
   <div id="returning-screen">
     <div class="returning-msg">
       <p>あなたの星は、既に星図に刻まれています。</p>
@@ -317,10 +217,8 @@ button.run-btn:hover { background: #ddd; }
     </div>
   </div>
 
-  <!-- 通常診断画面 -->
   <div id="quiz-screen">
     <p id="intro">あなたは本当に、あなたであると言えますか？</p>
-
     <div class="ritual-question">
       <p>Q1. あなたは今、目の前の鏡に映る自分を、一点の疑いもなく「自分自身」だと断言できますか？</p>
       <div class="scale-wrap">
@@ -329,9 +227,7 @@ button.run-btn:hover { background: #ddd; }
         <span class="scale-edge">肯定</span>
       </div>
     </div>
-
     <div id="quiz-area"></div>
-
     <div class="ritual-question" id="q22-wrap" style="display:none;">
       <p>Q22. 分類された自分を見て、まだあなたは本当に「あなた」だと言い切れますか？</p>
       <div class="scale-wrap">
@@ -340,9 +236,7 @@ button.run-btn:hover { background: #ddd; }
         <span class="scale-edge">肯定</span>
       </div>
     </div>
-
     <button class="run-btn" onclick="calculateOwn()">分析を実行する</button>
-
     <div id="result" class="result-box">
       <h2>// FOBS座標の特定</h2>
       <div id="params"></div>
@@ -360,7 +254,6 @@ button.run-btn:hover { background: #ddd; }
       </div>
       <p id="mbti-warn"></p>
     </div>
-
     <div id="naming-box" class="naming-box">
       <h3>// 座標に名前を刻む</h3>
       <p>この座標に、あなた自身の名前をつけてください。<br>それは星図に永遠に刻まれます。</p>
@@ -372,7 +265,6 @@ button.run-btn:hover { background: #ddd; }
       <button class="map-btn" onclick="goToMap()">星図を開く →</button>
       <div class="notice">※あなたの回答は集計データとして活用されます。あなたの座標は、社会の地図を描くために使われます。</div>
     </div>
-
     <div id="rec-section" class="rec-section">
       <h3>// あなたの座標が引き寄せるもの</h3>
       <div class="rec-grid" id="rec-grid"></div>
@@ -380,7 +272,10 @@ button.run-btn:hover { background: #ddd; }
   </div>
 </div>
 
+<script src="own-storage.js"></script>
 <script>
+const S = OwnStorage;
+
 const axes = [
   { key:"frontier", label:"Frontier", subLabel:"あなたの越境衝動を示す",
     desc:"未知への引力。既存の枠を飛び越えようとする力の強さ。", descSub:"高いほど、地図のない場所を好む。" },
@@ -393,8 +288,7 @@ const axes = [
 ];
 
 const changeLabels = {
-  "4":"恒星","3":"強化","2":"微強化","1":"定着",
-  "0":"不動",
+  "4":"恒星","3":"強化","2":"微強化","1":"定着","0":"不動",
   "-1":"微揺","-2":"揺らぎ","-3":"崩壊","-4":"暗黒星雲"
 };
 
@@ -442,48 +336,40 @@ const affiliates = [
     reason:"理と秩序を愛するあなたに。混沌を美しく整理するための技術。", url:"#" },
 ];
 
-// ── 初期化：再訪問チェック ──
 async function init() {
   try {
-    const existing = await window.storage.get('own_mystar');
+    const existing = await S.get('own_mystar');
     if (existing && existing.value) {
-      const prev = JSON.parse(existing.value);
-      showReturning(prev);
+      showReturning(JSON.parse(existing.value));
     } else {
       showQuiz();
     }
-  } catch(e) {
-    showQuiz();
-  }
+  } catch(e) { showQuiz(); }
 }
 
 function showReturning(prev) {
   document.getElementById('returning-screen').style.display = 'block';
   document.getElementById('prev-name').textContent = prev.name || '名無し';
   const date = prev.ts ? new Date(prev.ts).toLocaleDateString('ja-JP') : '—';
-  document.getElementById('prev-meta').textContent = `登録日: ${date}　[ ${prev.mbti || '——'} ]`;
-
-  const barsEl = document.getElementById('prev-bars');
-  const fobsMap = [
-    { label:'Frontier', val: prev.fobs ? prev.fobs.frontier : prev.x },
-    { label:'Order',    val: prev.fobs ? prev.fobs.order    : prev.size },
-    { label:'Bond',     val: prev.fobs ? prev.fobs.bond     : prev.y },
-    { label:'Sense',    val: prev.fobs ? prev.fobs.sense    : prev.color },
-  ];
-  barsEl.innerHTML = fobsMap.map(f => `
+  document.getElementById('prev-meta').textContent = `登録日: ${date}　[ ${prev.mbti||'——'} ]`;
+  const f = prev.fobs || {};
+  document.getElementById('prev-bars').innerHTML = [
+    { label:'Frontier', val: f.frontier ?? prev.x },
+    { label:'Order',    val: f.order    ?? prev.size },
+    { label:'Bond',     val: f.bond     ?? prev.y },
+    { label:'Sense',    val: f.sense    ?? prev.color },
+  ].map(a => `
     <div class="prev-axis">
-      <span class="prev-axis-name">${f.label}</span>
-      <div class="prev-axis-bar-wrap">
-        <div class="prev-axis-bar" style="width:${Math.round(f.val || 0)}%"></div>
-      </div>
-      <span class="prev-axis-pct">${Math.round(f.val || 0)}%</span>
+      <span class="prev-axis-name">${a.label}</span>
+      <div class="prev-axis-bar-wrap"><div class="prev-axis-bar" style="width:${Math.round(a.val||0)}%"></div></div>
+      <span class="prev-axis-pct">${Math.round(a.val||0)}%</span>
     </div>`).join('');
 }
 
 function showQuiz() {
   document.getElementById('quiz-screen').style.display = 'block';
-  buildScale('q1-btns', 'q1');
-  buildScale('q22-btns', 'q22');
+  buildScale('q1-btns','q1');
+  buildScale('q22-btns','q22');
   buildQuiz();
 }
 
@@ -492,130 +378,102 @@ function startRetry() {
   showQuiz();
 }
 
-// ── スケール生成 ──
-function buildScale(containerId, name) {
-  const wrap = document.getElementById(containerId);
-  for (let i = 1; i <= 5; i++) {
-    wrap.innerHTML += `<input type="radio" name="${name}" id="${name}_${i}" value="${i}" ${i===3?'checked':''}><label for="${name}_${i}">${i}</label>`;
+function buildScale(id, name) {
+  const el = document.getElementById(id);
+  for (let i=1;i<=5;i++) {
+    el.innerHTML += `<input type="radio" name="${name}" id="${name}_${i}" value="${i}" ${i===3?'checked':''}><label for="${name}_${i}">${i}</label>`;
   }
 }
 
-// ── FOBS質問生成 ──
 function buildQuiz() {
-  const quizArea = document.getElementById('quiz-area');
-  let currentSection = '';
-  questions.forEach((item, idx) => {
-    if (item.cat !== currentSection) {
-      currentSection = item.cat;
-      const ax = axes.find(a => a.key === item.cat);
-      quizArea.innerHTML += `<div class="section-header">// ${ax.label.toUpperCase()}</div>`;
+  const area = document.getElementById('quiz-area');
+  let sec = '';
+  questions.forEach((item,idx) => {
+    if (item.cat !== sec) {
+      sec = item.cat;
+      area.innerHTML += `<div class="section-header">// ${axes.find(a=>a.key===item.cat).label.toUpperCase()}</div>`;
     }
-    let html = `<div class="question"><p>${item.q}</p><div class="scale-wrap">`;
-    html += `<span class="scale-edge">否定</span><div class="scale-btns">`;
-    for (let i = 1; i <= 5; i++) {
-      html += `<input type="radio" name="fq${idx}" id="fq${idx}_${i}" value="${i}" ${i===3?'checked':''}><label for="fq${idx}_${i}">${i}</label>`;
-    }
-    html += `</div><span class="scale-edge">肯定</span></div></div>`;
-    quizArea.innerHTML += html;
+    let h = `<div class="question"><p>${item.q}</p><div class="scale-wrap"><span class="scale-edge">否定</span><div class="scale-btns">`;
+    for (let i=1;i<=5;i++) h += `<input type="radio" name="fq${idx}" id="fq${idx}_${i}" value="${i}" ${i===3?'checked':''}><label for="fq${idx}_${i}">${i}</label>`;
+    h += `</div><span class="scale-edge">肯定</span></div></div>`;
+    area.innerHTML += h;
   });
 }
 
 function toggleDesc(key) {
-  const desc = document.getElementById(`desc_${key}`);
-  const btn  = document.getElementById(`btn_${key}`);
-  const isOpen = desc.classList.contains('open');
-  desc.classList.toggle('open', !isOpen);
-  btn.classList.toggle('open', !isOpen);
-  btn.textContent = isOpen ? '?' : '×';
+  const d = document.getElementById(`desc_${key}`);
+  const b = document.getElementById(`btn_${key}`);
+  const o = d.classList.contains('open');
+  d.classList.toggle('open',!o); b.classList.toggle('open',!o);
+  b.textContent = o ? '?' : '×';
 }
 
 let visibility = 'public';
 function setVis(v) {
   visibility = v;
-  document.getElementById('vis-public').classList.toggle('selected', v === 'public');
-  document.getElementById('vis-private').classList.toggle('selected', v === 'private');
+  document.getElementById('vis-public').classList.toggle('selected', v==='public');
+  document.getElementById('vis-private').classList.toggle('selected', v==='private');
 }
 
-let globalParams = {};
-let globalMbti = '';
+let globalParams = {}, globalMbti = '';
 
 async function calculateOwn() {
-  const q1val  = parseInt(document.querySelector('input[name="q1"]:checked').value);
+  const q1val = parseInt(document.querySelector('input[name="q1"]:checked').value);
   document.getElementById('q22-wrap').style.display = 'block';
 
-  let scores = { frontier:0, order:0, bond:0, sense:0 };
-  questions.forEach((item, idx) => {
-    const val = parseInt(document.querySelector(`input[name="fq${idx}"]:checked`).value);
-    scores[item.cat] += (val - 1);
+  let scores = {frontier:0,order:0,bond:0,sense:0};
+  questions.forEach((item,idx) => {
+    scores[item.cat] += parseInt(document.querySelector(`input[name="fq${idx}"]:checked`).value) - 1;
   });
 
   const q22val = parseInt(document.querySelector('input[name="q22"]:checked').value);
   const diff = Math.max(-4, Math.min(4, q22val - q1val));
-  const changeLabel = changeLabels[String(diff)] || '不動';
 
   const params = {
-    frontier: (scores.frontier / 20 * 100).toFixed(0),
-    order:    (scores.order    / 20 * 100).toFixed(0),
-    bond:     (scores.bond     / 20 * 100).toFixed(0),
-    sense:    (scores.sense    / 20 * 100).toFixed(0),
+    frontier: (scores.frontier/20*100).toFixed(0),
+    order:    (scores.order/20*100).toFixed(0),
+    bond:     (scores.bond/20*100).toFixed(0),
+    sense:    (scores.sense/20*100).toFixed(0),
   };
   globalParams = params;
 
-  let paramHtml = '';
+  let ph = '';
   axes.forEach(ax => {
-    paramHtml += `
-      <div class="axis-block">
-        <div class="axis-header">
-          <span class="axis-name">${ax.label}</span>
-          <div class="axis-right">
-            <span class="axis-pct">${params[ax.key]}%</span>
-            <button class="axis-info-btn" id="btn_${ax.key}" onclick="toggleDesc('${ax.key}')">?</button>
-          </div>
+    ph += `<div class="axis-block">
+      <div class="axis-header">
+        <span class="axis-name">${ax.label}</span>
+        <div class="axis-right">
+          <span class="axis-pct">${params[ax.key]}%</span>
+          <button class="axis-info-btn" id="btn_${ax.key}" onclick="toggleDesc('${ax.key}')">?</button>
         </div>
-        <div class="param-bar"><div class="param-fill" id="fill_${ax.key}"></div></div>
-        <div class="axis-desc" id="desc_${ax.key}">
-          <div class="axis-desc-inner">
-            <div>${ax.subLabel}</div>
-            <div style="margin-top:4px;color:#444;">${ax.desc}</div>
-            <div class="dsub">${ax.descSub}</div>
-          </div>
-        </div>
-      </div>`;
+      </div>
+      <div class="param-bar"><div class="param-fill" id="fill_${ax.key}"></div></div>
+      <div class="axis-desc" id="desc_${ax.key}">
+        <div class="axis-desc-inner"><div>${ax.subLabel}</div><div style="margin-top:4px;color:#444;">${ax.desc}</div><div class="dsub">${ax.descSub}</div></div>
+      </div></div>`;
   });
-  document.getElementById('params').innerHTML = paramHtml;
-  setTimeout(() => {
-    axes.forEach(ax => {
-      document.getElementById(`fill_${ax.key}`).style.width = params[ax.key] + '%';
-    });
-  }, 60);
+  document.getElementById('params').innerHTML = ph;
+  setTimeout(() => axes.forEach(ax => { document.getElementById(`fill_${ax.key}`).style.width = params[ax.key]+'%'; }), 60);
 
-  const cvEl = document.getElementById('change-value');
-  cvEl.textContent = changeLabel;
-  cvEl.className = 'change-value' + (diff > 0 ? ' positive' : diff < 0 ? ' negative' : ' zero');
+  const cv = document.getElementById('change-value');
+  cv.textContent = changeLabels[String(diff)] || '不動';
+  cv.className = 'change-value' + (diff>0?' positive':diff<0?' negative':' zero');
 
-  const mbti = (params.bond     < 50 ? "I":"E")
-             + (params.sense    > 50 ? "N":"S")
-             + (params.frontier > 50 ? "T":"F")
-             + (params.order    < 50 ? "P":"J");
+  const mbti = (params.bond<50?'I':'E')+(params.sense>50?'N':'S')+(params.frontier>50?'T':'F')+(params.order<50?'P':'J');
   globalMbti = mbti;
-
   document.getElementById('result').style.display = 'block';
 
-  const storageKey = `own_count_${mbti}`;
+  const ck = `own_count_${mbti}`;
   let count = 0;
-  try {
-    const ex = await window.storage.get(storageKey, true);
-    if (ex && ex.value) count = parseInt(ex.value) || 0;
-  } catch(e) {}
+  try { const ex = await S.get(ck, true); if (ex?.value) count = parseInt(ex.value)||0; } catch(e){}
   count++;
-  try { await window.storage.set(storageKey, String(count), true); } catch(e) {}
+  try { await S.set(ck, String(count), true); } catch(e){}
 
   setTimeout(() => {
     document.getElementById('coord-loading').style.display = 'none';
     document.getElementById('coord-result').style.display = 'block';
     document.getElementById('coord-count').textContent = `${count} 人`;
-    document.getElementById('coord-label').innerHTML =
-      `この座標 <span>[ ${mbti} ]</span> に到達した者の数。<br>あなたはその中の、ひとりだ。`;
+    document.getElementById('coord-label').innerHTML = `この座標 <span>[ ${mbti} ]</span> に到達した者の数。<br>あなたはその中の、ひとりだ。`;
   }, 700);
 
   document.getElementById('mbti-warn').innerHTML =
@@ -624,53 +482,33 @@ async function calculateOwn() {
   setTimeout(() => {
     document.getElementById('naming-box').style.display = 'block';
     showRec();
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
   }, 1000);
 }
 
 function showRec() {
   const matched = affiliates.filter(af =>
-    Object.entries(af.cond).every(([k,v]) => {
-      if (!v) return true;
-      return v === 'high' ? globalParams[k] >= 50 : globalParams[k] < 50;
-    })
+    Object.entries(af.cond).every(([k,v]) => !v || (v==='high' ? globalParams[k]>=50 : globalParams[k]<50))
   ).slice(0,3);
   if (!matched.length) return;
   document.getElementById('rec-grid').innerHTML = matched.map(af => `
     <a class="rec-card" href="${af.url}" target="_blank" rel="noopener">
       <div class="rec-accent"></div>
-      <div class="rec-body">
-        <div class="rec-tag">${af.tag}</div>
-        <div class="rec-title">${af.title}</div>
-        <div class="rec-reason">${af.reason}</div>
-      </div>
-      <div class="rec-arrow">›</div>
-    </a>`).join('');
+      <div class="rec-body"><div class="rec-tag">${af.tag}</div><div class="rec-title">${af.title}</div><div class="rec-reason">${af.reason}</div></div>
+      <div class="rec-arrow">›</div></a>`).join('');
   document.getElementById('rec-section').style.display = 'block';
 }
 
 async function goToMap() {
   const name = document.getElementById('star-name').value.trim() || '名無し';
-  const x = Math.round((parseFloat(globalParams.frontier) + parseFloat(globalParams.order)) / 2);
-  const y = Math.round((parseFloat(globalParams.bond)     + parseFloat(globalParams.sense))  / 2);
-
-  const starData = {
-    name, x, y,
-    size:  parseFloat(globalParams.order),
-    color: parseFloat(globalParams.sense),
-    fobs:  globalParams,
-    vis:   visibility,
-    mbti:  globalMbti,
-    ts:    Date.now()
-  };
-
-  try { await window.storage.set('own_mystar', JSON.stringify(starData)); } catch(e) {}
-
+  const x = Math.round((parseFloat(globalParams.frontier)+parseFloat(globalParams.order))/2);
+  const y = Math.round((parseFloat(globalParams.bond)+parseFloat(globalParams.sense))/2);
+  const starData = { name, x, y, size: parseFloat(globalParams.order), color: parseFloat(globalParams.sense), fobs: globalParams, vis: visibility, mbti: globalMbti, ts: Date.now() };
+  try { await S.set('own_mystar', JSON.stringify(starData)); } catch(e){}
   if (visibility === 'public') {
     const key = `own_star_${Date.now()}_${Math.random().toString(36).slice(2,6)}`;
-    try { await window.storage.set(key, JSON.stringify(starData), true); } catch(e) {}
+    try { await S.set(key, JSON.stringify(starData), true); } catch(e){}
   }
-
   window.location.href = 'own_map.html';
 }
 
