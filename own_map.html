@@ -62,9 +62,7 @@ body { background:#000; color:#fff; font-family:'Courier New',Courier,monospace;
 .my-panel-label { font-size:0.55rem; color:#1a1a1a; letter-spacing:0.2rem; margin-bottom:6px; }
 .my-star-name { font-size:0.95rem; color:#fff; margin-bottom:4px; }
 .my-fobs { font-size:0.6rem; color:#2a2a2a; line-height:1.8; }
-.constellation-count {
-  font-size:0.58rem; color:#333; margin-top:6px; letter-spacing:0.05rem;
-}
+.constellation-count { font-size:0.58rem; color:#333; margin-top:6px; letter-spacing:0.05rem; }
 
 .star-popup {
   position:fixed; background:rgba(0,0,0,0.97); border:1px solid #1a1a1a;
@@ -74,10 +72,15 @@ body { background:#000; color:#fff; font-family:'Courier New',Courier,monospace;
 .star-popup .pp-name { font-size:0.95rem; color:#fff; margin-bottom:4px; }
 .star-popup .pp-fobs { font-size:0.65rem; color:#444; line-height:1.9; }
 .star-popup .pp-mbti { font-size:0.62rem; color:#2a2a2a; margin-top:4px; }
+.star-popup .pp-order {
+  font-size:0.6rem; color:#333; margin-top:4px; letter-spacing:0.05rem;
+}
 .star-popup .pp-connect {
   font-size:0.62rem; margin-top:8px; padding-top:8px;
-  border-top:1px solid #111; color:#555; letter-spacing:0.05rem;
+  border-top:1px solid #111; color:#555; letter-spacing:0.05rem; cursor:pointer;
+  pointer-events:all;
 }
+.star-popup .pp-connect:hover { color:#aaa; }
 .star-popup .pp-connect.connected { color:#888; }
 .star-popup .pp-close {
   position:absolute; top:7px; right:9px; font-size:0.62rem; color:#222;
@@ -133,6 +136,7 @@ body { background:#000; color:#fff; font-family:'Courier New',Courier,monospace;
   <div class="pp-name" id="pp-name"></div>
   <div class="pp-fobs" id="pp-fobs"></div>
   <div class="pp-mbti" id="pp-mbti"></div>
+  <div class="pp-order" id="pp-order"></div>
   <div class="pp-connect" id="pp-connect" onclick="toggleConnect()"></div>
 </div>
 
@@ -146,10 +150,12 @@ const popup = document.getElementById('star-popup');
 let stars = [], myStarData = null, frame = 0;
 let searchTarget = null;
 let highlightIds = new Set();
-let connectedKeys = new Set(); // 星座（繋いだ星のキー）
+// 星座：順序付き配列 [key1, key2, key3, ...]
+// 描画順：myStarData → key1 → key2 → ... → myStarData（ループ）
+let constellationChain = [];
 let currentPopupStar = null;
 
-const HIGHLIGHT_R = 8; // 検索ヒット半径（座標単位）
+const HIGHLIGHT_R = 8;
 
 function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 resize();
@@ -164,7 +170,7 @@ function senseColor(s, a) {
 }
 function orderSize(o) { return 1.2 + (Math.max(0,Math.min(100,o||50))/100)*5; }
 
-// ── 描画 ──
+// ── グリッド ──
 function drawGrid() {
   ctx.lineWidth = 1;
   ctx.strokeStyle = 'rgba(255,255,255,0.015)';
@@ -177,26 +183,44 @@ function drawGrid() {
   ctx.beginPath(); ctx.moveTo(0,toY(50)); ctx.lineTo(canvas.width,toY(50)); ctx.stroke();
 }
 
-// 星座の線を描画
+// ── 星座ライン（チェーン＋ループ） ──
 function drawConstellationLines() {
-  if (!myStarData || connectedKeys.size === 0) return;
-  const mx = toX(myStarData.x);
-  const my = toY(myStarData.y);
+  if (!myStarData || constellationChain.length === 0) return;
 
-  connectedKeys.forEach(key => {
+  // チェーンの座標リストを構築
+  // 始点：自分の星
+  const points = [{ x: myStarData.x, y: myStarData.y }];
+  constellationChain.forEach(key => {
     const star = stars.find(s => s._key === key);
-    if (!star) return;
-    const pulse = 0.18 + Math.sin(frame * 0.02) * 0.04;
-    ctx.beginPath();
-    ctx.moveTo(mx, my);
-    ctx.lineTo(toX(star.x), toY(star.y));
-    ctx.strokeStyle = `rgba(255,255,255,${pulse})`;
-    ctx.lineWidth = 0.6;
-    ctx.stroke();
+    if (star) points.push({ x: star.x, y: star.y });
   });
+
+  // ループで閉じる（最後→自分の星）
+  if (points.length >= 2) {
+    points.push({ x: myStarData.x, y: myStarData.y });
+  }
+
+  // フェードアウト（最後の線ほど薄く）
+  const totalSegs = points.length - 1;
+  for (let i = 0; i < totalSegs; i++) {
+    const from = points[i];
+    const to   = points[i + 1];
+    // 最初は濃く、ループ閉じ線は薄く
+    const isClosing = i === totalSegs - 1;
+    const alpha = isClosing
+      ? 0.12 + Math.sin(frame * 0.02) * 0.03
+      : 0.55 - (i / totalSegs) * 0.25 + Math.sin(frame * 0.02) * 0.04;
+
+    ctx.beginPath();
+    ctx.moveTo(toX(from.x), toY(from.y));
+    ctx.lineTo(toX(to.x),   toY(to.y));
+    ctx.strokeStyle = `rgba(255,255,255,${Math.max(0.08, alpha)})`;
+    ctx.lineWidth = isClosing ? 1 : 3;
+    ctx.stroke();
+  }
 }
 
-// 検索ターゲットのリング
+// ── 検索リング ──
 function drawSearchRing() {
   if (!searchTarget) return;
   const px = toX(searchTarget.x);
@@ -212,68 +236,63 @@ function drawSearchRing() {
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // 十字
   const arm = 6;
   ctx.strokeStyle = 'rgba(255,255,255,0.25)';
   ctx.lineWidth = 0.8;
   ctx.beginPath(); ctx.moveTo(px-arm,py); ctx.lineTo(px+arm,py); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(px,py-arm); ctx.lineTo(px,py+arm); ctx.stroke();
 
-  // ラベル
   ctx.fillStyle = 'rgba(255,255,255,0.2)';
   ctx.font = '8px Courier New';
   ctx.textAlign = 'left';
   ctx.fillText(`(${searchTarget.x},${searchTarget.y})`, px+arm+3, py-3);
 }
 
+// ── 星描画 ──
 function drawStar(star, isMe, pulse) {
   const px = toX(star.x), py = toY(star.y);
   const isHighlight = highlightIds.has(star._key);
-  const isConnected = connectedKeys.has(star._key);
-  const sz = orderSize(star.size) + (isMe ? Math.sin(pulse*0.04)*1.5 : 0)
-                                  + (isHighlight ? 1.5 : 0);
+  const chainIdx    = constellationChain.indexOf(star._key);
+  const isConnected = chainIdx !== -1;
+  const sz = orderSize(star.size)
+    + (isMe        ? Math.sin(pulse*0.04)*1.5 : 0)
+    + (isHighlight ? 1.5 : 0);
 
-  // グロー
-  const gr = isMe ? sz*7 : isHighlight ? sz*5 : sz*3.5;
-  const ga = isMe ? 0.22 : isHighlight ? 0.18 : isConnected ? 0.14 : 0.06;
+  const gr = isMe ? sz*7 : isHighlight ? sz*5 : isConnected ? sz*5 : sz*3.5;
+  const ga = isMe ? 0.22 : isHighlight ? 0.18 : isConnected ? 0.16 : 0.06;
   const g = ctx.createRadialGradient(px,py,0,px,py,gr);
   g.addColorStop(0, senseColor(star.color, ga));
   g.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = g;
   ctx.beginPath(); ctx.arc(px,py,gr,0,Math.PI*2); ctx.fill();
 
-  // 本体
-  const alpha = isMe ? 1 : isHighlight ? 0.9 : isConnected ? 0.75 : 0.55;
+  const alpha = isMe ? 1 : isHighlight ? 0.9 : isConnected ? 0.85 : 0.55;
   ctx.fillStyle = senseColor(star.color, alpha);
   ctx.beginPath(); ctx.arc(px,py,sz,0,Math.PI*2); ctx.fill();
 
-  // ハイライトリング
   if (isHighlight) {
-    ctx.beginPath();
-    ctx.arc(px, py, sz+3, 0, Math.PI*2);
-    ctx.strokeStyle = `rgba(255,255,255,${0.3 + Math.sin(frame*0.06)*0.1})`;
-    ctx.lineWidth = 0.8;
-    ctx.stroke();
+    ctx.beginPath(); ctx.arc(px,py,sz+3,0,Math.PI*2);
+    ctx.strokeStyle = `rgba(255,255,255,${0.3+Math.sin(frame*0.06)*0.1})`;
+    ctx.lineWidth = 0.8; ctx.stroke();
   }
 
-  // 星座接続リング
-  if (isConnected && !isMe) {
-    ctx.beginPath();
-    ctx.arc(px, py, sz+2, 0, Math.PI*2);
-    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-    ctx.lineWidth = 0.6;
-    ctx.stroke();
+  if (isConnected) {
+    // 順番ラベル
+    ctx.beginPath(); ctx.arc(px,py,sz+2.5,0,Math.PI*2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+    ctx.lineWidth = 1.2; ctx.stroke();
   }
 
-  // 名前
   if (star.vis==='public' && star.name && star.name!=='名無し') {
-    ctx.fillStyle = isMe ? 'rgba(255,255,255,0.85)'
-                  : isHighlight ? 'rgba(255,255,255,0.6)'
-                  : isConnected ? 'rgba(255,255,255,0.35)'
+    ctx.fillStyle = isMe       ? 'rgba(255,255,255,0.85)'
+                  : isConnected ? 'rgba(255,255,255,0.6)'
+                  : isHighlight ? 'rgba(255,255,255,0.55)'
                   : 'rgba(255,255,255,0.18)';
-    ctx.font = isMe ? '10px Courier New' : isHighlight ? '9px Courier New' : '8px Courier New';
+    ctx.font = (isMe||isConnected) ? '10px Courier New' : isHighlight ? '9px Courier New' : '8px Courier New';
     ctx.textAlign = 'center';
-    ctx.fillText(star.name, px, py-sz-5);
+    // 繋がってる星は番号付き
+    const label = isConnected ? `${star.name} (${chainIdx+1})` : star.name;
+    ctx.fillText(label, px, py-sz-5);
   }
 }
 
@@ -296,43 +315,35 @@ function onSearchType() {
 function doSearch() {
   const val = document.getElementById('search-input').value.trim();
   if (!val) { clearSearch(); return; }
-
   const parts = val.split(',').map(v => parseInt(v.trim()));
   if (parts.length < 2 || isNaN(parts[0]) || isNaN(parts[1])) {
-    document.getElementById('search-badge').textContent = '形式: 50,70';
-    document.getElementById('search-badge').style.display = 'block';
-    setTimeout(() => { document.getElementById('search-badge').style.display='none'; }, 2000);
-    return;
+    showBadge('形式: 50,70'); return;
   }
-
   const tx = Math.max(0,Math.min(100,parts[0]));
   const ty = Math.max(0,Math.min(100,parts[1]));
   searchTarget = { x:tx, y:ty };
-
-  // 範囲内の星をハイライト
   highlightIds.clear();
-  const allStars = [...stars, myStarData].filter(Boolean);
-  allStars.forEach(s => {
-    const dist = Math.hypot(s.x - tx, s.y - ty);
-    if (dist <= HIGHLIGHT_R) highlightIds.add(s._key);
+  [...stars, myStarData].filter(Boolean).forEach(s => {
+    if (Math.hypot(s.x-tx, s.y-ty) <= HIGHLIGHT_R) highlightIds.add(s._key);
   });
-
   const count = highlightIds.size;
-  const badge = document.getElementById('search-badge');
-  badge.textContent = count > 0 ? `(${tx},${ty}) 付近に ${count} 個の星` : `(${tx},${ty}) 付近に星なし`;
-  badge.style.display = 'block';
-  setTimeout(() => { badge.style.display='none'; }, 3000);
+  showBadge(count > 0 ? `(${tx},${ty}) 付近に ${count} 個の星` : `(${tx},${ty}) 付近に星なし`);
 }
 
 function clearSearch() {
-  searchTarget = null;
-  highlightIds.clear();
+  searchTarget = null; highlightIds.clear();
   document.getElementById('search-input').value = '';
   document.getElementById('search-clear').classList.remove('show');
   document.getElementById('search-badge').style.display = 'none';
 }
 
-// ── タップ/クリック ──
+function showBadge(msg) {
+  const b = document.getElementById('search-badge');
+  b.textContent = msg; b.style.display = 'block';
+  setTimeout(() => { b.style.display='none'; }, 3000);
+}
+
+// ── タップ ──
 function findNearStar(cx, cy) {
   let found = null, minD = 28;
   [...stars, myStarData].filter(Boolean).forEach(s => {
@@ -351,28 +362,39 @@ function showPopup(star, clientX, clientY) {
     `B: ${Math.round(f.bond??star.y??0)}&nbsp;&nbsp;S: ${Math.round(f.sense??star.color??0)}`;
   document.getElementById('pp-mbti').textContent = star.mbti ? `[ ${star.mbti} ]` : '';
 
-  // 星座接続ボタン（自分の星以外）
-  const connectEl = document.getElementById('pp-connect');
-  if (myStarData && star._key !== myStarData._key) {
-    const isConnected = connectedKeys.has(star._key);
-    connectEl.textContent = isConnected ? '— 星座から外す' : '+ 星座に追加する';
-    connectEl.className = 'pp-connect' + (isConnected ? ' connected' : '');
+  const connectEl  = document.getElementById('pp-connect');
+  const orderEl    = document.getElementById('pp-order');
+  const isMyself   = myStarData && star._key === myStarData._key;
+
+  if (!isMyself && myStarData) {
+    const chainIdx   = constellationChain.indexOf(star._key);
+    const isConnected = chainIdx !== -1;
+    if (isConnected) {
+      orderEl.textContent = `星座 ${chainIdx+1}番目`;
+      connectEl.textContent = '— 星座から外す';
+      connectEl.className = 'pp-connect connected';
+    } else {
+      const nextIdx = constellationChain.length + 1;
+      orderEl.textContent = `追加すると ${nextIdx}番目`;
+      connectEl.textContent = '+ 星座に追加する';
+      connectEl.className = 'pp-connect';
+    }
+    orderEl.style.display = 'block';
     connectEl.style.display = 'block';
   } else {
+    orderEl.style.display = 'none';
     connectEl.style.display = 'none';
   }
 
-  const pw = 170, ph = 130;
+  const pw = 175, ph = 140;
   let left = clientX + 14;
   let top  = clientY - 10;
   if (left + pw > window.innerWidth)  left = clientX - pw - 14;
   if (top  + ph > window.innerHeight) top  = window.innerHeight - ph - 10;
   if (top < 55) top = 55;
 
-  popup.style.left    = left + 'px';
-  popup.style.top     = top  + 'px';
-  popup.style.display = 'block';
-  popup.style.pointerEvents = 'all';
+  popup.style.left = left+'px'; popup.style.top = top+'px';
+  popup.style.display = 'block'; popup.style.pointerEvents = 'all';
 }
 
 function closePopup() {
@@ -386,54 +408,42 @@ async function toggleConnect() {
   const key = currentPopupStar._key;
   if (!key) return;
 
-  if (connectedKeys.has(key)) {
-    connectedKeys.delete(key);
+  const idx = constellationChain.indexOf(key);
+  if (idx !== -1) {
+    constellationChain.splice(idx, 1);
   } else {
-    connectedKeys.add(key);
+    constellationChain.push(key);
   }
 
-  // ストレージ保存
-  try {
-    await S.set('own_constellation', JSON.stringify([...connectedKeys]));
-  } catch(e){}
-
+  try { await S.set('own_constellation', JSON.stringify(constellationChain)); } catch(e){}
   updateConstellationCount();
-
-  // ポップアップ更新
-  const isConnected = connectedKeys.has(key);
-  const connectEl = document.getElementById('pp-connect');
-  connectEl.textContent = isConnected ? '— 星座から外す' : '+ 星座に追加する';
-  connectEl.className = 'pp-connect' + (isConnected ? ' connected' : '');
+  showPopup(currentPopupStar,
+    parseInt(popup.style.left), parseInt(popup.style.top));
 }
 
 function updateConstellationCount() {
   const el = document.getElementById('constellation-count');
-  if (connectedKeys.size > 0) {
-    el.textContent = `星座: ${connectedKeys.size} 本の線`;
-  } else {
-    el.textContent = '';
-  }
+  el.textContent = constellationChain.length > 0
+    ? `星座: ${constellationChain.length} 点` : '';
 }
 
 canvas.addEventListener('click', e => {
   const rect = canvas.getBoundingClientRect();
-  const found = findNearStar(e.clientX - rect.left, e.clientY - rect.top);
+  const found = findNearStar(e.clientX-rect.left, e.clientY-rect.top);
   if (found) showPopup(found, e.clientX, e.clientY);
   else closePopup();
 });
-
 canvas.addEventListener('touchend', e => {
   e.preventDefault();
   const t = e.changedTouches[0];
   const rect = canvas.getBoundingClientRect();
-  const found = findNearStar(t.clientX - rect.left, t.clientY - rect.top);
+  const found = findNearStar(t.clientX-rect.left, t.clientY-rect.top);
   if (found) showPopup(found, t.clientX, t.clientY);
   else closePopup();
-}, { passive: false });
+}, { passive:false });
 
-// ── データロード ──
+// ── ロード ──
 async function loadStars() {
-  // 自分の星
   try {
     const my = await S.get('own_mystar');
     if (my?.value) {
@@ -449,17 +459,14 @@ async function loadStars() {
     }
   } catch(e){}
 
-  // 星座（保存済みの線）
   try {
     const saved = await S.get('own_constellation');
     if (saved?.value) {
-      const keys = JSON.parse(saved.value);
-      connectedKeys = new Set(keys);
+      constellationChain = JSON.parse(saved.value);
       updateConstellationCount();
     }
   } catch(e){}
 
-  // 全星読み込み
   try {
     const [realKeys, dummyKeys] = await Promise.all([
       S.list('own_star_',  true),
