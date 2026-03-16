@@ -240,6 +240,11 @@ button.run-btn:hover { background: #ddd; }
     <div id="result" class="result-box">
       <h2>// FOBS座標の特定</h2>
       <div id="params"></div>
+      <div id="map-coord-box" style="margin-bottom:18px;padding:12px 14px;border:1px solid #111;background:#000;display:none;">
+        <div style="font-size:0.6rem;color:#333;letter-spacing:0.2rem;margin-bottom:6px;">// 星図での座標</div>
+        <div id="map-coord-value" style="font-size:1rem;color:#888;letter-spacing:0.15rem;"></div>
+        <div style="font-size:0.65rem;color:#222;margin-top:4px;line-height:1.7;">星図の検索バーにこの数値を入力するとあなたの座標を探せます。</div>
+      </div>
       <div class="change-box">
         <div class="change-label-text">// 自己認識の変化</div>
         <div class="change-value" id="change-value">—</div>
@@ -462,6 +467,12 @@ async function calculateOwn() {
   const mbti = (params.bond<50?'I':'E')+(params.sense>50?'N':'S')+(params.frontier>50?'T':'F')+(params.order<50?'P':'J');
   globalMbti = mbti;
   document.getElementById('result').style.display = 'block';
+
+  // 星図座標を表示
+  const mapX = Math.round((parseFloat(params.frontier) + parseFloat(params.order)) / 2);
+  const mapY = Math.round((parseFloat(params.bond)     + parseFloat(params.sense))  / 2);
+  document.getElementById('map-coord-value').textContent = `X: ${mapX},  Y: ${mapY}`;
+  document.getElementById('map-coord-box').style.display = 'block';
 
   const ck = `own_count_${mbti}`;
   let count = 0;
