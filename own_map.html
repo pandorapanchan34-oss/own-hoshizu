@@ -6,83 +6,126 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background:#000; color:#fff; font-family:'Courier New',Courier,monospace; overflow:hidden; width:100vw; height:100vh; }
+
 .header {
-  position:fixed; top:0; left:0; right:0; padding:16px 24px;
+  position:fixed; top:0; left:0; right:0; padding:12px 16px;
   display:flex; justify-content:space-between; align-items:center; z-index:100;
-  background:linear-gradient(to bottom,rgba(0,0,0,0.95) 0%,transparent 100%);
+  background:linear-gradient(to bottom,rgba(0,0,0,0.97) 0%,transparent 100%);
+  gap:10px;
 }
-.header-title { font-size:0.85rem; letter-spacing:0.3rem; color:#333; }
-.header-right { display:flex; gap:16px; align-items:center; }
-.header-info { font-size:0.68rem; color:#2a2a2a; letter-spacing:0.1rem; }
+.header-title { font-size:0.78rem; letter-spacing:0.25rem; color:#333; white-space:nowrap; }
+
+.search-wrap { display:flex; align-items:center; gap:5px; flex:1; max-width:240px; }
+.search-input {
+  flex:1; background:#000; border:1px solid #1a1a1a; color:#aaa;
+  font-family:'Courier New',monospace; font-size:0.7rem;
+  padding:6px 8px; outline:none; transition:border-color 0.2s; min-width:0;
+}
+.search-input:focus { border-color:#444; color:#fff; }
+.search-input::placeholder { color:#222; }
+.search-btn {
+  background:none; border:1px solid #1a1a1a; color:#333;
+  font-family:'Courier New',monospace; font-size:0.65rem;
+  padding:6px 8px; cursor:pointer; transition:all 0.15s; white-space:nowrap;
+}
+.search-btn:hover { border-color:#666; color:#aaa; }
+.search-clear {
+  background:none; border:none; color:#222; font-size:0.7rem;
+  cursor:pointer; padding:4px; transition:color 0.15s; display:none;
+}
+.search-clear.show { display:block; }
+.search-clear:hover { color:#777; }
+
+.header-right { display:flex; gap:10px; align-items:center; }
+.header-info { font-size:0.62rem; color:#222; letter-spacing:0.08rem; white-space:nowrap; }
 .back-btn {
-  font-size:0.7rem; color:#2a2a2a; letter-spacing:0.1rem;
-  background:none; border:1px solid #111; padding:6px 12px;
+  font-size:0.65rem; color:#222; letter-spacing:0.08rem;
+  background:none; border:1px solid #0d0d0d; padding:5px 9px;
   cursor:pointer; font-family:'Courier New',monospace;
-  transition:all 0.2s; text-decoration:none; display:inline-block;
+  transition:all 0.2s; text-decoration:none; display:inline-block; white-space:nowrap;
 }
 .back-btn:hover { border-color:#444; color:#666; }
+
+.search-badge {
+  position:fixed; top:50px; left:50%; transform:translateX(-50%);
+  background:rgba(0,0,0,0.95); border:1px solid #1a1a1a;
+  font-size:0.62rem; color:#444; padding:4px 12px;
+  letter-spacing:0.1rem; z-index:99; display:none; white-space:nowrap;
+}
 
 #starCanvas { display:block; width:100vw; height:100vh; cursor:crosshair; }
 
 .my-panel {
-  position:fixed; bottom:24px; left:24px; border:1px solid #111;
-  padding:16px 20px; background:rgba(0,0,0,0.95); min-width:210px; z-index:100;
+  position:fixed; bottom:20px; left:16px; border:1px solid #0d0d0d;
+  padding:12px 16px; background:rgba(0,0,0,0.96); min-width:190px; z-index:100;
 }
-.my-panel-label { font-size:0.58rem; color:#2a2a2a; letter-spacing:0.2rem; margin-bottom:8px; }
-.my-star-name { font-size:1rem; color:#fff; margin-bottom:6px; }
-.my-fobs { font-size:0.62rem; color:#333; line-height:1.8; }
+.my-panel-label { font-size:0.55rem; color:#1a1a1a; letter-spacing:0.2rem; margin-bottom:6px; }
+.my-star-name { font-size:0.95rem; color:#fff; margin-bottom:4px; }
+.my-fobs { font-size:0.6rem; color:#2a2a2a; line-height:1.8; }
+.constellation-count {
+  font-size:0.58rem; color:#333; margin-top:6px; letter-spacing:0.05rem;
+}
 
 .star-popup {
-  position:fixed;
-  background:rgba(0,0,0,0.97);
-  border:1px solid #222;
-  padding:16px 20px;
-  font-size:0.72rem;
-  color:#888;
-  display:none;
-  z-index:200;
-  line-height:1.9;
-  min-width:160px;
-  pointer-events:none;
+  position:fixed; background:rgba(0,0,0,0.97); border:1px solid #1a1a1a;
+  padding:14px 16px; font-size:0.7rem; color:#777;
+  display:none; z-index:200; line-height:1.9; min-width:155px; pointer-events:none;
 }
-.star-popup .pp-name { font-size:1rem; color:#fff; margin-bottom:6px; letter-spacing:0.05rem; }
-.star-popup .pp-fobs { font-size:0.68rem; color:#555; line-height:1.9; }
-.star-popup .pp-mbti { font-size:0.65rem; color:#333; margin-top:6px; letter-spacing:0.1rem; }
+.star-popup .pp-name { font-size:0.95rem; color:#fff; margin-bottom:4px; }
+.star-popup .pp-fobs { font-size:0.65rem; color:#444; line-height:1.9; }
+.star-popup .pp-mbti { font-size:0.62rem; color:#2a2a2a; margin-top:4px; }
+.star-popup .pp-connect {
+  font-size:0.62rem; margin-top:8px; padding-top:8px;
+  border-top:1px solid #111; color:#555; letter-spacing:0.05rem;
+}
+.star-popup .pp-connect.connected { color:#888; }
 .star-popup .pp-close {
-  position:absolute; top:8px; right:10px;
-  font-size:0.65rem; color:#333; cursor:pointer;
-  pointer-events:all;
+  position:absolute; top:7px; right:9px; font-size:0.62rem; color:#222;
+  cursor:pointer; pointer-events:all;
 }
-.star-popup .pp-close:hover { color:#888; }
+.star-popup .pp-close:hover { color:#777; }
 
-.axis-label { position:fixed; font-size:0.58rem; color:#111; letter-spacing:0.12rem; pointer-events:none; }
-.ax-xr { bottom:50%; right:18px; transform:translateY(50%); }
-.ax-xl { bottom:50%; left:18px; transform:translateY(50%); }
-.ax-yt { top:65px; left:50%; transform:translateX(-50%); }
-.ax-yb { bottom:75px; left:50%; transform:translateX(-50%); }
+.axis-label { position:fixed; font-size:0.55rem; color:#0d0d0d; letter-spacing:0.1rem; pointer-events:none; }
+.ax-xr { bottom:50%; right:14px; transform:translateY(50%); }
+.ax-xl { bottom:50%; left:14px; transform:translateY(50%); }
+.ax-yt { top:58px; left:50%; transform:translateX(-50%); }
+.ax-yb { bottom:68px; left:50%; transform:translateX(-50%); }
 
-.loading { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); font-size:0.72rem; color:#222; letter-spacing:0.2rem; }
+.loading { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); font-size:0.7rem; color:#1a1a1a; letter-spacing:0.2rem; }
 </style>
 </head>
 <body>
+
 <div class="header">
   <div class="header-title">Own(星図)</div>
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="search-input"
+      placeholder="50,70" maxlength="10"
+      onkeydown="if(event.key==='Enter') doSearch()"
+      oninput="onSearchType()">
+    <button class="search-btn" onclick="doSearch()">→</button>
+    <button class="search-clear" id="search-clear" onclick="clearSearch()">×</button>
+  </div>
   <div class="header-right">
     <div class="header-info" id="star-count"></div>
     <a class="back-btn" href="index.html">← 戻る</a>
   </div>
 </div>
+
+<div class="search-badge" id="search-badge"></div>
 <div class="loading" id="loading">星図を展開中...</div>
 <canvas id="starCanvas"></canvas>
+
 <div class="axis-label ax-xr">高 →</div>
-<div class="axis-label ax-xl">← 低　F + O</div>
-<div class="axis-label ax-yt">B + S ↑ 高</div>
+<div class="axis-label ax-xl">← 低　F+O</div>
+<div class="axis-label ax-yt">B+S ↑ 高</div>
 <div class="axis-label ax-yb">↓ 低</div>
 
 <div class="my-panel" id="my-panel" style="display:none;">
   <div class="my-panel-label">// あなたの星</div>
   <div class="my-star-name" id="my-name">—</div>
   <div class="my-fobs" id="my-fobs"></div>
+  <div class="constellation-count" id="constellation-count"></div>
 </div>
 
 <div class="star-popup" id="star-popup">
@@ -90,6 +133,7 @@ body { background:#000; color:#fff; font-family:'Courier New',Courier,monospace;
   <div class="pp-name" id="pp-name"></div>
   <div class="pp-fobs" id="pp-fobs"></div>
   <div class="pp-mbti" id="pp-mbti"></div>
+  <div class="pp-connect" id="pp-connect" onclick="toggleConnect()"></div>
 </div>
 
 <script src="own-storage.js"></script>
@@ -98,7 +142,14 @@ const S = OwnStorage;
 const canvas = document.getElementById('starCanvas');
 const ctx = canvas.getContext('2d');
 const popup = document.getElementById('star-popup');
+
 let stars = [], myStarData = null, frame = 0;
+let searchTarget = null;
+let highlightIds = new Set();
+let connectedKeys = new Set(); // 星座（繋いだ星のキー）
+let currentPopupStar = null;
+
+const HIGHLIGHT_R = 8; // 検索ヒット半径（座標単位）
 
 function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 resize();
@@ -113,6 +164,7 @@ function senseColor(s, a) {
 }
 function orderSize(o) { return 1.2 + (Math.max(0,Math.min(100,o||50))/100)*5; }
 
+// ── 描画 ──
 function drawGrid() {
   ctx.lineWidth = 1;
   ctx.strokeStyle = 'rgba(255,255,255,0.015)';
@@ -120,26 +172,106 @@ function drawGrid() {
     ctx.beginPath(); ctx.moveTo(toX(i*10),0); ctx.lineTo(toX(i*10),canvas.height); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(0,toY(i*10)); ctx.lineTo(canvas.width,toY(i*10)); ctx.stroke();
   }
-  ctx.strokeStyle = 'rgba(255,255,255,0.045)';
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
   ctx.beginPath(); ctx.moveTo(toX(50),0); ctx.lineTo(toX(50),canvas.height); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(0,toY(50)); ctx.lineTo(canvas.width,toY(50)); ctx.stroke();
 }
 
+// 星座の線を描画
+function drawConstellationLines() {
+  if (!myStarData || connectedKeys.size === 0) return;
+  const mx = toX(myStarData.x);
+  const my = toY(myStarData.y);
+
+  connectedKeys.forEach(key => {
+    const star = stars.find(s => s._key === key);
+    if (!star) return;
+    const pulse = 0.18 + Math.sin(frame * 0.02) * 0.04;
+    ctx.beginPath();
+    ctx.moveTo(mx, my);
+    ctx.lineTo(toX(star.x), toY(star.y));
+    ctx.strokeStyle = `rgba(255,255,255,${pulse})`;
+    ctx.lineWidth = 0.6;
+    ctx.stroke();
+  });
+}
+
+// 検索ターゲットのリング
+function drawSearchRing() {
+  if (!searchTarget) return;
+  const px = toX(searchTarget.x);
+  const py = toY(searchTarget.y);
+  const r  = (HIGHLIGHT_R / 100) * canvas.width * 0.84;
+  const pulse = 0.08 + Math.sin(frame * 0.04) * 0.04;
+
+  ctx.beginPath();
+  ctx.arc(px, py, r, 0, Math.PI*2);
+  ctx.strokeStyle = `rgba(255,255,255,${pulse})`;
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3,4]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // 十字
+  const arm = 6;
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+  ctx.lineWidth = 0.8;
+  ctx.beginPath(); ctx.moveTo(px-arm,py); ctx.lineTo(px+arm,py); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(px,py-arm); ctx.lineTo(px,py+arm); ctx.stroke();
+
+  // ラベル
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.font = '8px Courier New';
+  ctx.textAlign = 'left';
+  ctx.fillText(`(${searchTarget.x},${searchTarget.y})`, px+arm+3, py-3);
+}
+
 function drawStar(star, isMe, pulse) {
   const px = toX(star.x), py = toY(star.y);
-  const sz = orderSize(star.size) + (isMe ? Math.sin(pulse*0.04)*1.5 : 0);
-  const gr = isMe ? sz*7 : sz*3.5;
-  const ga = isMe ? 0.22 : 0.06;
+  const isHighlight = highlightIds.has(star._key);
+  const isConnected = connectedKeys.has(star._key);
+  const sz = orderSize(star.size) + (isMe ? Math.sin(pulse*0.04)*1.5 : 0)
+                                  + (isHighlight ? 1.5 : 0);
+
+  // グロー
+  const gr = isMe ? sz*7 : isHighlight ? sz*5 : sz*3.5;
+  const ga = isMe ? 0.22 : isHighlight ? 0.18 : isConnected ? 0.14 : 0.06;
   const g = ctx.createRadialGradient(px,py,0,px,py,gr);
   g.addColorStop(0, senseColor(star.color, ga));
   g.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = g;
   ctx.beginPath(); ctx.arc(px,py,gr,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle = senseColor(star.color, isMe?1:0.55);
+
+  // 本体
+  const alpha = isMe ? 1 : isHighlight ? 0.9 : isConnected ? 0.75 : 0.55;
+  ctx.fillStyle = senseColor(star.color, alpha);
   ctx.beginPath(); ctx.arc(px,py,sz,0,Math.PI*2); ctx.fill();
+
+  // ハイライトリング
+  if (isHighlight) {
+    ctx.beginPath();
+    ctx.arc(px, py, sz+3, 0, Math.PI*2);
+    ctx.strokeStyle = `rgba(255,255,255,${0.3 + Math.sin(frame*0.06)*0.1})`;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+  }
+
+  // 星座接続リング
+  if (isConnected && !isMe) {
+    ctx.beginPath();
+    ctx.arc(px, py, sz+2, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 0.6;
+    ctx.stroke();
+  }
+
+  // 名前
   if (star.vis==='public' && star.name && star.name!=='名無し') {
-    ctx.fillStyle = isMe?'rgba(255,255,255,0.85)':'rgba(255,255,255,0.2)';
-    ctx.font = isMe?'10px Courier New':'8px Courier New';
+    ctx.fillStyle = isMe ? 'rgba(255,255,255,0.85)'
+                  : isHighlight ? 'rgba(255,255,255,0.6)'
+                  : isConnected ? 'rgba(255,255,255,0.35)'
+                  : 'rgba(255,255,255,0.18)';
+    ctx.font = isMe ? '10px Courier New' : isHighlight ? '9px Courier New' : '8px Courier New';
     ctx.textAlign = 'center';
     ctx.fillText(star.name, px, py-sz-5);
   }
@@ -148,12 +280,59 @@ function drawStar(star, isMe, pulse) {
 function drawAll() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
   drawGrid();
-  stars.forEach(s => drawStar(s,false,0));
-  if (myStarData) drawStar(myStarData,true,frame);
+  drawSearchRing();
+  drawConstellationLines();
+  stars.forEach(s => { if (!s._isMe) drawStar(s, false, 0); });
+  if (myStarData) drawStar(myStarData, true, frame);
 }
 function loop() { frame++; drawAll(); requestAnimationFrame(loop); }
 
-// タップ処理
+// ── 検索 ──
+function onSearchType() {
+  const val = document.getElementById('search-input').value;
+  document.getElementById('search-clear').classList.toggle('show', val.length > 0);
+}
+
+function doSearch() {
+  const val = document.getElementById('search-input').value.trim();
+  if (!val) { clearSearch(); return; }
+
+  const parts = val.split(',').map(v => parseInt(v.trim()));
+  if (parts.length < 2 || isNaN(parts[0]) || isNaN(parts[1])) {
+    document.getElementById('search-badge').textContent = '形式: 50,70';
+    document.getElementById('search-badge').style.display = 'block';
+    setTimeout(() => { document.getElementById('search-badge').style.display='none'; }, 2000);
+    return;
+  }
+
+  const tx = Math.max(0,Math.min(100,parts[0]));
+  const ty = Math.max(0,Math.min(100,parts[1]));
+  searchTarget = { x:tx, y:ty };
+
+  // 範囲内の星をハイライト
+  highlightIds.clear();
+  const allStars = [...stars, myStarData].filter(Boolean);
+  allStars.forEach(s => {
+    const dist = Math.hypot(s.x - tx, s.y - ty);
+    if (dist <= HIGHLIGHT_R) highlightIds.add(s._key);
+  });
+
+  const count = highlightIds.size;
+  const badge = document.getElementById('search-badge');
+  badge.textContent = count > 0 ? `(${tx},${ty}) 付近に ${count} 個の星` : `(${tx},${ty}) 付近に星なし`;
+  badge.style.display = 'block';
+  setTimeout(() => { badge.style.display='none'; }, 3000);
+}
+
+function clearSearch() {
+  searchTarget = null;
+  highlightIds.clear();
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-clear').classList.remove('show');
+  document.getElementById('search-badge').style.display = 'none';
+}
+
+// ── タップ/クリック ──
 function findNearStar(cx, cy) {
   let found = null, minD = 28;
   [...stars, myStarData].filter(Boolean).forEach(s => {
@@ -164,21 +343,31 @@ function findNearStar(cx, cy) {
 }
 
 function showPopup(star, clientX, clientY) {
+  currentPopupStar = star;
   const f = star.fobs || {};
   document.getElementById('pp-name').textContent = star.name || '名無し';
   document.getElementById('pp-fobs').innerHTML =
-    `F: ${Math.round(f.frontier ?? star.x ?? 0)}&nbsp;&nbsp;` +
-    `O: ${Math.round(f.order ?? star.size ?? 0)}<br>` +
-    `B: ${Math.round(f.bond ?? star.y ?? 0)}&nbsp;&nbsp;` +
-    `S: ${Math.round(f.sense ?? star.color ?? 0)}`;
+    `F: ${Math.round(f.frontier??star.x??0)}&nbsp;&nbsp;O: ${Math.round(f.order??star.size??0)}<br>` +
+    `B: ${Math.round(f.bond??star.y??0)}&nbsp;&nbsp;S: ${Math.round(f.sense??star.color??0)}`;
   document.getElementById('pp-mbti').textContent = star.mbti ? `[ ${star.mbti} ]` : '';
 
-  const pw = 180, ph = 110;
+  // 星座接続ボタン（自分の星以外）
+  const connectEl = document.getElementById('pp-connect');
+  if (myStarData && star._key !== myStarData._key) {
+    const isConnected = connectedKeys.has(star._key);
+    connectEl.textContent = isConnected ? '— 星座から外す' : '+ 星座に追加する';
+    connectEl.className = 'pp-connect' + (isConnected ? ' connected' : '');
+    connectEl.style.display = 'block';
+  } else {
+    connectEl.style.display = 'none';
+  }
+
+  const pw = 170, ph = 130;
   let left = clientX + 14;
   let top  = clientY - 10;
   if (left + pw > window.innerWidth)  left = clientX - pw - 14;
   if (top  + ph > window.innerHeight) top  = window.innerHeight - ph - 10;
-  if (top < 60) top = 60;
+  if (top < 55) top = 55;
 
   popup.style.left    = left + 'px';
   popup.style.top     = top  + 'px';
@@ -189,6 +378,41 @@ function showPopup(star, clientX, clientY) {
 function closePopup() {
   popup.style.display = 'none';
   popup.style.pointerEvents = 'none';
+  currentPopupStar = null;
+}
+
+async function toggleConnect() {
+  if (!currentPopupStar || !myStarData) return;
+  const key = currentPopupStar._key;
+  if (!key) return;
+
+  if (connectedKeys.has(key)) {
+    connectedKeys.delete(key);
+  } else {
+    connectedKeys.add(key);
+  }
+
+  // ストレージ保存
+  try {
+    await S.set('own_constellation', JSON.stringify([...connectedKeys]));
+  } catch(e){}
+
+  updateConstellationCount();
+
+  // ポップアップ更新
+  const isConnected = connectedKeys.has(key);
+  const connectEl = document.getElementById('pp-connect');
+  connectEl.textContent = isConnected ? '— 星座から外す' : '+ 星座に追加する';
+  connectEl.className = 'pp-connect' + (isConnected ? ' connected' : '');
+}
+
+function updateConstellationCount() {
+  const el = document.getElementById('constellation-count');
+  if (connectedKeys.size > 0) {
+    el.textContent = `星座: ${connectedKeys.size} 本の線`;
+  } else {
+    el.textContent = '';
+  }
 }
 
 canvas.addEventListener('click', e => {
@@ -214,17 +438,28 @@ async function loadStars() {
     const my = await S.get('own_mystar');
     if (my?.value) {
       myStarData = JSON.parse(my.value);
+      myStarData._key = 'own_mystar';
       document.getElementById('my-panel').style.display = 'block';
       document.getElementById('my-name').textContent = myStarData.name || '名無し';
       const f = myStarData.fobs || {};
       document.getElementById('my-fobs').innerHTML =
         `F: ${Math.round(f.frontier??myStarData.x??0)}　O: ${Math.round(f.order??myStarData.size??0)}<br>` +
         `B: ${Math.round(f.bond??myStarData.y??0)}　S: ${Math.round(f.sense??myStarData.color??0)}<br>` +
-        `<span style="color:#1a1a1a">[ ${myStarData.mbti||'——'} ]</span>`;
+        `<span style="color:#111">[ ${myStarData.mbti||'——'} ]</span>`;
     }
   } catch(e){}
 
-  // 本物の星 + ダミー星を両方取得
+  // 星座（保存済みの線）
+  try {
+    const saved = await S.get('own_constellation');
+    if (saved?.value) {
+      const keys = JSON.parse(saved.value);
+      connectedKeys = new Set(keys);
+      updateConstellationCount();
+    }
+  } catch(e){}
+
+  // 全星読み込み
   try {
     const [realKeys, dummyKeys] = await Promise.all([
       S.list('own_star_',  true),
@@ -238,7 +473,12 @@ async function loadStars() {
     if (allKeys.length) {
       const results = await Promise.all(
         allKeys.map(k =>
-          S.get(k, true).then(r => r?.value ? JSON.parse(r.value) : null).catch(()=>null)
+          S.get(k, true).then(r => {
+            if (!r?.value) return null;
+            const s = JSON.parse(r.value);
+            s._key = k;
+            return s;
+          }).catch(()=>null)
         )
       );
       stars = results.filter(Boolean);
